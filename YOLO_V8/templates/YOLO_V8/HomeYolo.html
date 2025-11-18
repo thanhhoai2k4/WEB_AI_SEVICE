@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>YOLO_V8</title>
+  </head>
+  <body>
+
+    <style>
+        .imageshow
+        {
+            width: auto;
+            height: 400px;
+            border: 2px solid black;
+        }
+
+        fieldset
+        {
+            width: 600px;
+            margin: 30px auto;
+            border: 2px solid black;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+    </style>
+
+    <fieldset>
+    <legend> YOLO V8: FACE DETECTION </legend>
+        <form method="POST" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            
+            <div>
+                <label for="file">Select an image to upload:</label> </br>
+                <div class="imageshow">
+
+                </div>
+            </div>
+            <input type="file" name="file" id="image_input" value="" accept="image/png, image/jpeg, image/jpg" />
+            <button type="submit" style="padding: 10px 20px; background: #d9534f; color: white; border: none; cursor: pointer;">
+                Bắt đầu phân tích
+            </button>
+
+        </form>
+
+  </body>
+</html>
+
+<script>
+
+    const inputElement = document.getElementById("image_input");
+    const displayDiv = document.querySelector(".imageshow");
+    inputElement.addEventListener("change", function(event) {
+        // Lấy danh sách các file người dùng đã chọn
+        const file = event.target.files[0];
+
+        // Logic an toàn: Nếu có file và đó là file ảnh
+        if (file && file.type.startsWith("image/")) {
+            
+            // Bước 2: Khởi tạo FileReader - "Cầu nối" đọc dữ liệu
+            const reader = new FileReader();
+
+            // Bước 3: Định nghĩa hành động KHI đọc xong (Asynchronous)
+            reader.onload = function(e) {
+                // e.target.result chứa chuỗi Base64 của ảnh
+                
+                // Tạo thẻ img mới
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                
+                // Style trực tiếp cho ảnh đẹp trong khung
+                img.style.maxWidth = "100%";
+                img.style.maxHeight = "100%";
+                img.style.objectFit = "contain"; // Giữ tỉ lệ ảnh không bị méo
+                img.style.display = "block";
+                img.style.margin = "auto"; // Căn giữa
+
+                // Xóa nội dung cũ (nếu có) và thêm ảnh mới vào
+                displayDiv.innerHTML = ""; 
+                displayDiv.appendChild(img);
+                
+                // Sáng tạo thêm: Đổi màu viền div để báo hiệu thành công
+                displayDiv.style.borderColor = "#4CAF50"; // Màu xanh lá
+            };
+
+            // Bước 4: Ra lệnh đọc file dưới dạng Data URL
+            reader.readAsDataURL(file);
+        } else {
+            // Trường hợp người dùng hủy chọn hoặc chọn sai file
+            displayDiv.innerHTML = "<p style='text-align:center; padding-top:180px; color:red;'>Vui lòng chọn file ảnh hợp lệ!</p>";
+        }
+    });
+</script>
