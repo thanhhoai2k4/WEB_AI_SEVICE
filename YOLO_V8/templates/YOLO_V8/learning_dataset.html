@@ -1,1 +1,90 @@
-<h1> Learning Dataset </h1>
+{% extends "YOLO_V8/base.html" %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Danh sách Nhạc sĩ (Musicians)</h4>
+        <!-- Nút kích hoạt Modal -->
+        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addMusicianModal">
+            + Thêm Nhạc sĩ
+        </button>
+    </div>
+    
+    <div class="card-body">
+        <table class="table table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Họ (Last Name)</th>
+                    <th>Tên (First Name)</th>
+                    <th>Nhạc cụ (Instrument)</th>
+                    <th  class="text-center"> Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- VÒNG LẶP FOR CỦA DJANGO -->
+                {% for musician in musicians %}
+                <tr>
+                    <td>{{ musician.id }}</td>
+                    <td>{{ musician.last_name }}</td>
+                    <td>{{ musician.first_name }}</td>
+                    <td>
+                        <span class="badge bg-info text-dark">{{ musician.instrument }}</span>
+                    </td>
+                    <td class="text-center">
+                            <!-- thuc hien xoa hoac sua -->
+                            <form action="{% url 'delete_musician' musician.id %}" method="POST" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Remove</button>
+            
+                            </form>
+                            
+                            <a href="{% url "delete_musician" musician.id %}" class="btn btn-primary form">Edit</a>
+                        
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">Chưa có dữ liệu nào. Hãy thêm mới!</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- PHẦN MODAL (Ẩn mặc định, chỉ hiện khi bấm nút Thêm) -->
+<div class="modal fade" id="addMusicianModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thêm Nhạc sĩ mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Form bắt đầu tại đây -->
+      <form method="POST">
+          {% csrf_token %} <!-- Bắt buộc để bảo mật -->
+          <div class="modal-body">
+                <!-- Django tự render các ô input dựa trên forms.py -->
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold">{{ field.label }}</label>
+                    {{ field }} 
+                </div>
+                {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">Lưu dữ liệu</button>
+          </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

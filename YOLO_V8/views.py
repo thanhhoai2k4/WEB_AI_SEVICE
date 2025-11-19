@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 import cv2
 from ultralytics import YOLO
 import numpy as np
 import base64
+from .models import Musician, MusicianForm
 
 model = YOLO('yolov8n.pt')
 
@@ -36,14 +37,49 @@ def yolo_detect_view(request):
                 'result_image': img_data,
                 'status': 'success'
             })
+    return redirect("Home_View")
     
 
 
 def Learning_Dataset(request):
+    # --- PHẦN 1: XỬ LÝ KHI NGƯỜI DÙNG BẤM NÚT THÊM (POST) ---
+    if request.method == 'POST':
+        # Đổ dữ liệu người dùng gửi lên vào cái khuôn Form
+        form = MusicianForm(request.POST)
+        if form.is_valid():
+            form.save() # Lưu vào database
+            return redirect('learning_dataset') # Load lại trang để thấy dữ liệu mới
+    else:
+        # Nếu chỉ là mở trang, tạo một cái form rỗng
+        form = MusicianForm()
+
+    # --- PHẦN 2: LẤY DỮ LIỆU HIỂN THỊ (GET) ---
+    # Lấy tất cả nhạc sĩ trong database
+    musicians = Musician.objects.all().order_by('-id') # Người mới nhất lên đầu
+
+    # Đóng gói dữ liệu vào context để gửi sang HTML
+    context = {
+        'musicians': musicians,
+        'form': form
+    }
+    
+    return render(request, 'YOLO_V8/learning_dataset.html', context)
+
+
+
+def delete_musician(request, id):
+
+    # tim doi tuong
+    musican = get_object_or_404(Musician, pk=int(id))
+    if not musican:
+        print("Khong ton tai doi tuong can xoa trong csdl.")
+
+    if (request.method == 'POST'):
+        musican.delete()
+        return redirect("learning_dataset")
+    else:
+        return redirect('learning_dataset')
     
 
-
-
-
-
-    return render(request, "YOLO_V8/learning_dataset.html")
+def gioithieu(request):
+    return render(request,"YOLO_V8/gioithieu.html")
