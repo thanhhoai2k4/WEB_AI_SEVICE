@@ -36,3 +36,14 @@ def yolo_detect_view(request):
                 'result_image': img_data,
                 'status': 'success'
             })
+    
+
+
+def Learning_Dataset(request):
+    
+
+
+
+
+
+    return render(request, "YOLO_V8/learning_dataset.html")
