@@ -83,3 +83,24 @@ def delete_musician(request, id):
 
 def gioithieu(request):
     return render(request,"YOLO_V8/gioithieu.html")
+
+
+
+def edit(request, id):
+    musician = get_object_or_404(Musician, id)
+
+    if (request.method=="POST"):
+        form = MusicianForm(request.POST, instance=musician)
+        if form.is_valid():
+            form.save() # Lưu thay đổi vào DB
+            return redirect('learning_dataset') # Quay về trang danh sách sau khi sửa xong
+    
+    else:
+        form = MusicianForm(instance=musician)
+    
+    context = {
+        'form': form,
+        'musician': musician # Truyền biến này để hiển thị tên lên tiêu đề
+    }
+
+    return render(request, 'YOLO_V8/musician_update.html', context)

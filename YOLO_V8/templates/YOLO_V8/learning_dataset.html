@@ -39,7 +39,9 @@
             
                             </form>
                             
-                            <a href="{% url "delete_musician" musician.id %}" class="btn btn-primary form">Edit</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editMusicianModal">
+                                Edit
+                            </button>
                         
                     </td>
                 </tr>
@@ -77,6 +79,37 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
             <button type="submit" class="btn btn-primary">Lưu dữ liệu</button>
+          </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editMusicianModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit musician</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Form bắt đầu tại đây -->
+      <form method="POST" action="{% url 'edit_musian' 0 %}">
+          {% csrf_token %} <!-- Bắt buộc để bảo mật -->
+          <div class="modal-body">
+                <!-- Django tự render các ô input dựa trên forms.py -->
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold">{{ field.label }}</label>
+                    {{ field }} 
+                </div>
+                {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">Edit</button>
           </div>
       </form>
       
