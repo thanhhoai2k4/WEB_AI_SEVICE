@@ -4,9 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>YOLO_V8</title>
   </head>
-  <body>
-
-    <style>
+  <style>
         .imageshow
         {
             width: auto;
@@ -22,20 +20,36 @@
             padding: 20px;
             background-color: #f9f9f9;
         }
+
+        {% if result_image %}
+            .imgne
+            {
+                max-width: 100%;
+                max_height: 100%;
+                object-fit: contain;
+                display: block;
+                margin: auto;
+            }
+        {% endif %}
     </style>
+  <body>
+
+    <div
 
     <fieldset>
     <legend> YOLO V8: FACE DETECTION </legend>
-        <form method="POST" enctype="multipart/form-data" action="">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'yolo_detect' %}">
             {% csrf_token %}
             
             <div>
                 <label for="file">Select an image to upload:</label> </br>
                 <div class="imageshow">
-
+                    {% if result_image %}
+                        <img class="imgne" src="{{ result_image }}" alt="YOLO_RESULT">
+                    {% endif %}
                 </div>
             </div>
-            <input type="file" name="file" id="image_input" value="" accept="image/png, image/jpeg, image/jpg" />
+            <input type="file" name="image_upload" id="image_input" value="" accept="image/png, image/jpeg, image/jpg" />
             <button type="submit" style="padding: 10px 20px; background: #d9534f; color: white; border: none; cursor: pointer;">
                 Bắt đầu phân tích
             </button>
