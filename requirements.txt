@@ -1,4 +1,4 @@
-django
-psycopg2-binary
-opencv-python
-ultralytics
+django==5.2.8
+psycopg2-binary==2.9.11
+opencv-python==4.12.0.88
+ultralytics==8.3.228
