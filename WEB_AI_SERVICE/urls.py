@@ -22,4 +22,5 @@ from django.urls import include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("YOLO_V8.urls")),
+    path("user/", include("user.urls")), # Thêm đường dẫn cho app user
 ]

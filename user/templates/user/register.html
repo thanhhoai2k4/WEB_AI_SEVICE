@@ -1,0 +1,25 @@
+{% extends "YOLO_V8/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header bg-success text-white">
+                <h3 class="text-center font-weight-light my-2">Đăng Ký Tài Khoản</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-grid gap-2 mt-3">
+                        <button class="btn btn-success btn-lg" type="submit">Đăng Ký</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small"><a href="{% url 'login' %}">Đã có tài khoản? Đăng nhập</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
