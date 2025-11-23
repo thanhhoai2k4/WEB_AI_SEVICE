@@ -5,11 +5,17 @@ import numpy as np
 import base64
 from .models import Musician, MusicianForm
 
+# yeu cau dang nhap tai khaong de su dung cac dich vu
+
+from django.contrib.auth.decorators import login_required
+
 model = YOLO('yolov8n.pt')
+
 
 def Home(request):
     return render(request, 'YOLO_V8/HomeYolo.html')
 
+@login_required # chi ai dang nhap moi su dung duoc dich vu cua yolov8
 def yolo_detect_view(request):
 
     file = request.FILES
@@ -40,7 +46,7 @@ def yolo_detect_view(request):
     return redirect("Home_View")
     
 
-
+@login_required
 def Learning_Dataset(request):
     # --- PHẦN 1: XỬ LÝ KHI NGƯỜI DÙNG BẤM NÚT THÊM (POST) ---
     if request.method == 'POST':
@@ -66,7 +72,7 @@ def Learning_Dataset(request):
     return render(request, 'YOLO_V8/learning_dataset.html', context)
 
 
-
+@login_required
 def delete_musician(request, id):
 
     # tim doi tuong
@@ -80,12 +86,12 @@ def delete_musician(request, id):
     else:
         return redirect('learning_dataset')
     
-
+@login_required
 def gioithieu(request):
     return render(request,"YOLO_V8/gioithieu.html")
 
 
-
+@login_required
 def edit(request, id):
     musician = get_object_or_404(Musician, id)
 

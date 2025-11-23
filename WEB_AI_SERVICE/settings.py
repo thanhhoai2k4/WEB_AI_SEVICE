@@ -139,3 +139,8 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/user/login/"
+
+
+LOGIN_URL = 'login' # trung voi login trong user/urls
+
+a = 0

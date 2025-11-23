@@ -21,7 +21,7 @@ class Album(models.Model):
 
 
 # form
-
+# tu dong them 2 truogn nua usrename mk1 mk2
 class MusicianForm(forms.ModelForm):
     class Meta:
         model = Musician

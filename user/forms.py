@@ -14,3 +14,5 @@ class CustomRegisterForm(UserCreationForm):
                 'class': 'form-control mb-3',
                 'placeholder': f'Nhập {field}...'
             })
+
+
